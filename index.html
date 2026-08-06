@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#173d2b" />
+  <title>Biscoito da Sorte Futshow</title>
+  <style>
+    :root {
+      --green: #173d2b;
+      --green-2: #24563d;
+      --gold: #d6aa45;
+      --cream: #fff8e9;
+      --white: #ffffff;
+      --text: #203027;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(214,170,69,.22), transparent 34%),
+        linear-gradient(160deg, var(--green), #0f281d 72%);
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 440px;
+      text-align: center;
+    }
+
+    .brand {
+      font-size: 14px;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      color: #f2d488;
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(28px, 8vw, 42px);
+      line-height: 1.05;
+    }
+
+    .subtitle {
+      margin: 0 auto 22px;
+      max-width: 360px;
+      color: #e8efe9;
+      line-height: 1.5;
+    }
+
+    .card {
+      background: var(--cream);
+      color: var(--text);
+      border-radius: 26px;
+      padding: 26px 22px;
+      box-shadow: 0 20px 55px rgba(0,0,0,.28);
+      border: 2px solid rgba(214,170,69,.8);
+      min-height: 350px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .cookie {
+      width: 154px;
+      height: 154px;
+      border: 0;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #f0c36f, #c9842e);
+      box-shadow:
+        inset -12px -14px 20px rgba(113,57,12,.25),
+        inset 10px 10px 20px rgba(255,242,187,.55),
+        0 16px 25px rgba(87,48,10,.25);
+      cursor: pointer;
+      font-size: 76px;
+      transition: transform .25s ease, box-shadow .25s ease;
+      animation: float 2.6s ease-in-out infinite;
+    }
+
+    .cookie:hover { transform: scale(1.04) rotate(-2deg); }
+    .cookie:active { transform: scale(.96); }
+
+    @keyframes float {
+      0%,100% { translate: 0 0; }
+      50% { translate: 0 -7px; }
+    }
+
+    .hint {
+      margin-top: 18px;
+      font-weight: 700;
+      color: var(--green);
+    }
+
+    .message-box {
+      display: none;
+      width: 100%;
+      animation: reveal .55s ease;
+    }
+
+    @keyframes reveal {
+      from { opacity: 0; transform: scale(.94) translateY(10px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .icon {
+      font-size: 58px;
+      margin-bottom: 12px;
+    }
+
+    .category {
+      display: inline-block;
+      background: rgba(23,61,43,.1);
+      color: var(--green);
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+
+    .message {
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: 24px;
+      line-height: 1.35;
+      margin: 0 0 22px;
+    }
+
+    .actions {
+      width: 100%;
+      display: grid;
+      gap: 10px;
+    }
+
+    button.action {
+      border: 0;
+      border-radius: 14px;
+      padding: 14px 16px;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .primary {
+      background: var(--green);
+      color: var(--white);
+    }
+
+    .secondary {
+      background: #e9dcc1;
+      color: var(--green);
+    }
+
+    .footer {
+      margin-top: 16px;
+      font-size: 13px;
+      line-height: 1.5;
+      color: #d8e3db;
+    }
+
+    .footer strong { color: #f2d488; }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <div class="brand">Futshow apresenta</div>
+    <h1>🥠 Biscoito da Sorte Virtual</h1>
+    <p class="subtitle">Toque no biscoito e descubra uma mensagem para inspirar seu dia.</p>
+
+    <section class="card">
+      <div id="start">
+        <button class="cookie" id="cookie" aria-label="Abrir biscoito da sorte">🥠</button>
+        <div class="hint">Toque para abrir</div>
+      </div>
+
+      <div class="message-box" id="messageBox">
+        <div class="icon" id="icon">⭐</div>
+        <div class="category" id="category">Motivação</div>
+        <p class="message" id="message"></p>
+
+        <div class="actions">
+          <button class="action primary" id="again">Abrir outro biscoito</button>
+          <button class="action secondary" id="share">Compartilhar no WhatsApp</button>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">
+      Dicas e incentivo com a <strong>Nutricionista Rafaela Santos Braz</strong><br>
+      @nutrirafaela.santosbraz
+    </div>
+  </main>
+
+  <script>
+    const messages = [{"type": "motivacao", "icon": "🏆", "text": "A disciplina de hoje constrói o resultado de amanhã."}, {"type": "motivacao", "icon": "⚽", "text": "Seu melhor jogo começa antes de entrar em campo."}, {"type": "motivacao", "icon": "💪", "text": "Consistência vence a pressa."}, {"type": "nutricao", "icon": "🍌", "text": "Uma boa recuperação começa com hidratação e alimentação adequada."}, {"type": "nutricao", "icon": "💧", "text": "Não espere sentir sede para beber água."}, {"type": "nutricao", "icon": "🍎", "text": "Inclua uma fruta no seu dia e marque um ponto para sua saúde."}, {"type": "nutricao", "icon": "🥗", "text": "Cada refeição é uma oportunidade de cuidar do seu desempenho."}, {"type": "divertida", "icon": "😄", "text": "Hoje vale repetir a fruta. O refrigerante pode ficar no banco."}, {"type": "divertida", "icon": "🥅", "text": "Nem todo chute vira gol, mas toda boa escolha conta."}, {"type": "divertida", "icon": "🔥", "text": "Seu adversário de hoje é a preguiça. Entre em campo para vencer."}, {"type": "especial", "icon": "⭐", "text": "Mensagem especial: cuide do corpo que leva você até seus objetivos."}];
+
+    const start = document.getElementById('start');
+    const box = document.getElementById('messageBox');
+    const icon = document.getElementById('icon');
+    const category = document.getElementById('category');
+    const message = document.getElementById('message');
+
+    let currentMessage = null;
+
+    function label(type) {
+      const labels = {
+        motivacao: 'Motivação',
+        nutricao: 'Nutrição',
+        divertida: 'Mensagem divertida',
+        especial: 'Mensagem especial'
+      };
+      return labels[type] || 'Mensagem';
+    }
+
+    function openCookie() {
+      currentMessage = messages[Math.floor(Math.random() * messages.length)];
+      icon.textContent = currentMessage.icon;
+      category.textContent = label(currentMessage.type);
+      message.textContent = `“${currentMessage.text}”`;
+
+      start.style.display = 'none';
+      box.style.display = 'block';
+    }
+
+    document.getElementById('cookie').addEventListener('click', openCookie);
+    document.getElementById('again').addEventListener('click', openCookie);
+
+    document.getElementById('share').addEventListener('click', () => {
+      if (!currentMessage) return;
+      const text = `🥠 Minha mensagem do Biscoito da Sorte Futshow:\n\n“${currentMessage.text}”\n\nNutricionista Rafaela Santos Braz`;
+      window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+    });
+  </script>
+</body>
+</html>
